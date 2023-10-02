@@ -76,9 +76,11 @@ function Logo() {
 }
 
 function Results({ movies }) {
-	<p className="num-results">
-		Found <strong>{movies?.length ?? 0}</strong> results
-	</p>;
+	return (
+		<p className="num-results">
+			Found <strong>{movies?.length}</strong> results
+		</p>
+	);
 }
 function Main({ children }) {
 	return <main className="main">{children}</main>;
@@ -216,6 +218,17 @@ function SelectedMovie({ selectedId, onClearMovie, onAddWatched, watched }) {
 		onAddWatched(newMovie);
 		onClearMovie();
 	};
+	useEffect(() => {
+		function callback(e) {
+			(e) => {
+				if (e.key === "Escape") {
+					onClearMovie();
+				}
+			};
+		}
+		document.addEventListener("keydown", callback);
+		return () => document.removeEventListener("keydown", callback);
+	}, [onClearMovie]);
 	return (
 		<div className="details">
 			{isLoading ? (
@@ -357,8 +370,8 @@ export default function App() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState(null);
 	const [selectedId, setSelectedId] = useState(null);
-	const [query, setQuery] = useState("interstellar");
-	console.log(selectedId);
+	const [query, setQuery] = useState("");
+
 	function handleSelectMovie(id) {
 		setSelectedId(id === selectedId ? null : id);
 	}
@@ -375,6 +388,7 @@ export default function App() {
 	function handleDeleteWatched(id) {
 		setWatched((w) => w.filter((mov) => mov.imdbID !== id));
 	}
+
 	useEffect(() => {
 		const controller = new AbortController();
 		async function fetchMovies() {
@@ -403,6 +417,7 @@ export default function App() {
 			setError("");
 			return;
 		}
+		handleClearMovie();
 		fetchMovies();
 		return function () {
 			controller.abort();
