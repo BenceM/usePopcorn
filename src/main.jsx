@@ -12,7 +12,5 @@ function Test() {
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<App />
-		{/* <StarRating maxRating={10} />
-		<StarRating className="test" /> */}
 	</React.StrictMode>,
 );
