@@ -249,7 +249,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
 				setIsLoading(true);
 
 				const res = await fetch(
-					`http://www.omdbapi.com/?apikey=${
+					`https://www.omdbapi.com/?apikey=${
 						import.meta.env.VITE_OMDB_KEY
 					}&i=${selectedId}`,
 				);
